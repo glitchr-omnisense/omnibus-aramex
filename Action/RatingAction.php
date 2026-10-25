@@ -33,6 +33,8 @@ final class RatingAction implements ActionInterface, ApiAwareInterface
         $s = $request->shipment;
         $international = strtoupper($s->sender->country) !== strtoupper($s->recipient->country);
         $rates = [];
+        $failure = null;
+        $answered = 0;
         foreach ($s->option('products', $international ? ['PPX', 'EPX'] : ['OND', 'CDS']) as $product) {
             try {
                 $data = $this->api->call('RateCalculator', 'CalculateRate', [
@@ -41,11 +43,16 @@ final class RatingAction implements ActionInterface, ApiAwareInterface
                     'ShipmentDetails' => Mapping::details($s, $product),
                     'PreferredCurrencyCode' => $s->option('currency', 'USD'),
                 ]);
-            } catch (\Omnibus\Exception\CarrierException) {
+            } catch (\Omnibus\Exception\CarrierException $e) {
+                $failure = $e;
                 continue;
             }
+            ++$answered;
             $total = $data['TotalAmount'] ?? [];
             $rates[] = new Rate('aramex', $product, Mapping::PRODUCTS[$product] ?? 'Aramex '.$product, (int) round(((float) ($total['Value'] ?? 0)) * 100), strtoupper((string) ($total['CurrencyCode'] ?? 'USD')));
+        }
+        if (0 === $answered && null !== $failure) {
+            throw $failure; // every service refused: the carrier failed, not "no rate"
         }
         usort($rates, static fn (Rate $a, Rate $b) => $a->amount <=> $b->amount);
         $request->setResult($rates);
