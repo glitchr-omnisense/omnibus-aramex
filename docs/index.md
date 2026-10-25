@@ -131,12 +131,18 @@ update's, read in this order:
 `collect` also matches "collected", so an update saying the parcel was collected from the shipper
 reads as `AVAILABLE_FOR_PICKUP` unless its code says otherwise.
 
+> [!WARNING]
+> Known defect: "collected from shipper" reads `AVAILABLE_FOR_PICKUP`, where the parcel is in transit.
+
 **Pickup points.** `FetchOffices` returns every Aramex office of the address's country; the
 offices in the address's city (compared without case) come first, the others keep Aramex's
 order, and the list is cut to `limit`. Aramex gives no distance and no hours: `distance` is
 `null` and `openingHours` empty. The id is the office's `Entity` (else its location name), the
 name its `OfficeLocation`, the address its two lines, postcode, city and country, with its
 coordinates. The parcel is not used.
+
+> [!WARNING]
+> Known defect: offices come with the searched city first and no distance, where the contract wants nearest first.
 
 ## Example
 
