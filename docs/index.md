@@ -1,6 +1,6 @@
 # omnibus/aramex
 
-Aramex for [omniscient/omnibus](https://github.com/glitchr-studio/omnibus): rates, shipments with
+Aramex for [omnisense/omnibus](https://github.com/glitchr-omnisense/omnibus): rates, shipments with
 their labels, tracking and offices, through Aramex's web services in their JSON form. The gateway
 calls, under `https://ws.aramex.net/ShippingAPI.V2` (live) or
 `https://ws.sbx.aramex.net/ShippingAPI.V2` (the sandbox, `sandbox: true`):
@@ -21,7 +21,7 @@ whose `Reference1` is `omnibus`, with a 20-second timeout.
 composer require omnibus/aramex
 ```
 
-Requires PHP 8.2, `omniscient/omnibus` (2.x) and `symfony/http-client` (6.4, 7 or 8); given no
+Requires PHP 8.2, `omnisense/omnibus` (2.x) and `symfony/http-client` (6.4, 7 or 8); given no
 HTTP client, the factory makes one with `HttpClient::create()`. In a Symfony application with
 `Omnibus\Bridge\Symfony\OmnibusBundle`, the factory is registered as soon as the package is
 installed.
@@ -44,7 +44,7 @@ and its **country** (`JO`, `AE`, `BH`...). The sandbox has its own set.
 | `account_entity` | string | - | yes | the account's station |
 | `account_country` | string | - | yes | the account's country (sent in capitals) |
 | `sandbox` | bool | `false` | no | `true`: `ws.sbx.aramex.net` |
-| `rates` | list | - | no | prices from configuration instead of `CalculateRate` ([the rates option](https://github.com/glitchr-studio/omnibus/blob/2.x/docs/configuration.md#the-rates-option)): with it, `CalculateRate` is not called |
+| `rates` | list | - | no | prices from configuration instead of `CalculateRate` ([the rates option](https://github.com/glitchr-omnisense/omnibus/blob/2.x/docs/configuration.md#the-rates-option)): with it, `CalculateRate` is not called |
 
 Shipment options (`Shipment::$options`):
 
