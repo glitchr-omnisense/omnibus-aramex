@@ -224,6 +224,12 @@ Every failure is an `Omnibus\Exception\CarrierException` whose `carrier` is `ara
 A missing option among the six credentials is an `InvalidConfigException` when the gateway is
 built; `GetSlip`, `Cancel` and `Paperless` raise `RequestNotSupportedException` before any call.
 
+No failure carries the password and the account PIN: a network error's message has them masked as
+`***` (the key parameters of a URL too), its previous is a copy of the HTTP client's exception (the
+same class and code), and no trace of the chain keeps its arguments, where the request's options
+stood ([No secret in a
+failure](https://github.com/glitchr-omnisense/omnibus/blob/2.x/docs/errors.md#no-secret-in-a-failure)).
+
 ## Verified, and not
 
 Tested offline: `Tests/AramexGatewayTest.php` (each product priced in its own call, cheapest

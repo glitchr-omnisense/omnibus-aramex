@@ -3,6 +3,7 @@
 namespace Omnibus\Aramex;
 
 use Omnibus\Exception\CarrierException;
+use Omnibus\Http\Redaction;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface as HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -43,16 +44,28 @@ final class Api
             $status = $response->getStatusCode();
             $data = json_decode($response->getContent(false), true);
         } catch (HttpExceptionInterface|\JsonException $e) {
-            throw new CarrierException('aramex', 'Aramex request failed: '.$e->getMessage(), null, $e);
+            $secrets = $this->secrets();
+
+            throw Redaction::withoutArguments(new CarrierException('aramex', 'Aramex request failed: '.Redaction::text($e->getMessage(), $secrets), null, Redaction::copy($e, $secrets)));
         }
         if (!\is_array($data)) {
-            throw new CarrierException('aramex', sprintf('Aramex answered HTTP %d with a body that is not JSON.', $status));
+            throw Redaction::withoutArguments(new CarrierException('aramex', sprintf('Aramex answered HTTP %d with a body that is not JSON.', $status)));
         }
         if ($status >= 400 || !empty($data['HasErrors'])) {
             $error = $data['Notifications'][0] ?? [];
-            throw new CarrierException('aramex', (string) ($error['Message'] ?? sprintf('HTTP %d', $status)), isset($error['Code']) ? (string) $error['Code'] : null);
+            throw Redaction::withoutArguments(new CarrierException('aramex', (string) ($error['Message'] ?? sprintf('HTTP %d', $status)), isset($error['Code']) ? (string) $error['Code'] : null));
         }
 
         return $data;
+    }
+
+    /**
+     * What a failure must not carry: the credentials, and what a request made of them.
+     *
+     * @return list<string>
+     */
+    private function secrets(string ...$more): array
+    {
+        return [$this->password, $this->accountPin, ...$more];
     }
 }
