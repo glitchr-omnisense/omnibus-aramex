@@ -119,30 +119,29 @@ update's, read in this order:
 
 | Code | Or the description contains | `TrackingStatus` |
 |---|---|---|
-| `SH005`, `SH006` | `delivered` | `DELIVERED` |
+| `SH005`, `SH006` | `delivered`, `collected by consignee` | `DELIVERED` |
 | `SH003` | `out for delivery` | `OUT_FOR_DELIVERY` |
-| | `held`, `collect` | `AVAILABLE_FOR_PICKUP` |
+| | `collected from shipper`, `picked up` | `IN_TRANSIT` |
+| | `held`, `ready`, `awaiting` or `available for collection` (or `for pickup`), `for collection at` | `AVAILABLE_FOR_PICKUP` |
 | `SH068`, `SH069` | `return` | `RETURNED` |
 | `SH007` to `SH012` | `attempt`, `refused`, `incorrect` | `EXCEPTION` |
 | `SH014` | `record created`, `shipment created` | `PENDING` |
 | any other code | | `IN_TRANSIT` |
 | no code | | `UNKNOWN` |
 
-`collect` also matches "collected", so an update saying the parcel was collected from the shipper
-reads as `AVAILABLE_FOR_PICKUP` unless its code says otherwise.
+"Collected from shipper" is Aramex taking the parcel (in transit), "collected by consignee" the
+recipient taking it at an office (delivered); a parcel waiting at an office is available for
+pickup.
 
-> [!WARNING]
-> Known defect: "collected from shipper" reads `AVAILABLE_FOR_PICKUP`, where the parcel is in transit.
-
-**Pickup points.** `FetchOffices` returns every Aramex office of the address's country; the
-offices in the address's city (compared without case) come first, the others keep Aramex's
-order, and the list is cut to `limit`. Aramex gives no distance and no hours: `distance` is
-`null` and `openingHours` empty. The id is the office's `Entity` (else its location name), the
-name its `OfficeLocation`, the address its two lines, postcode, city and country, with its
-coordinates. The parcel is not used.
-
-> [!WARNING]
-> Known defect: offices come with the searched city first and no distance, where the contract wants nearest first.
+**Pickup points.** `FetchOffices` returns every Aramex office of the address's country, in no
+order and without distance, and the address has no coordinates. They come nearest first as far
+as that allows: the offices of the address's postcode, then of its city (compared without case),
+then the others by great-circle distance to those (the mean of their coordinates), then the
+offices without coordinates in Aramex's order; the list is cut to `limit`. `distance` stays
+`null` (it would not be from the address) and `openingHours` empty. The id is the office's
+`Entity`, followed by `:` and its location name when several offices share that `Entity` (else
+the location name alone); the name its `OfficeLocation`, the address its two lines, postcode,
+city and country, with its coordinates. The parcel is not used.
 
 ## Example
 
@@ -230,7 +229,9 @@ built; `GetSlip`, `Cancel` and `Paperless` raise `RequestNotSupportedException` 
 Tested offline: `Tests/AramexGatewayTest.php` (each product priced in its own call, cheapest
 first in `USD`, the account in `ClientInfo`, the product group, the weight in kilograms; a
 shipment created with its label, report `9729`, the product and the customs value; tracking with
-its `/Date()/` times and statuses; offices with the searched city first and their coordinates;
+its `/Date()/` times and statuses; offices with the searched city first and their coordinates, then nearest to it, an `Entity`
+shared by two offices told apart; "collected from shipper" in transit, "collected by consignee"
+delivered;
 notifications raised with their code) and `Tests/AramexContractTest.php`, the family's
 conformance suite on recorded answers. The example above was run in the core's harness on those
 recorded answers.

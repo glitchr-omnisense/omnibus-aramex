@@ -46,9 +46,10 @@ final class Mapping
         $d = strtolower((string) $description);
 
         return match (true) {
-            \in_array($code, ['SH005', 'SH006'], true) || str_contains($d, 'delivered') => TrackingStatus::DELIVERED,
+            \in_array($code, ['SH005', 'SH006'], true) || str_contains($d, 'delivered') || str_contains($d, 'collected by consignee') => TrackingStatus::DELIVERED,
             'SH003' === $code || str_contains($d, 'out for delivery') => TrackingStatus::OUT_FOR_DELIVERY,
-            str_contains($d, 'held') || str_contains($d, 'collect') => TrackingStatus::AVAILABLE_FOR_PICKUP,
+            str_contains($d, 'collected from shipper') || str_contains($d, 'picked up') => TrackingStatus::IN_TRANSIT, // Aramex has the parcel
+            str_contains($d, 'held') || (bool) preg_match('/(ready|awaiting|available) for (collection|pickup)|for collection at/', $d) => TrackingStatus::AVAILABLE_FOR_PICKUP,
             \in_array($code, ['SH068', 'SH069'], true) || str_contains($d, 'return') => TrackingStatus::RETURNED,
             \in_array($code, ['SH007', 'SH008', 'SH009', 'SH010', 'SH011', 'SH012'], true) || str_contains($d, 'attempt') || str_contains($d, 'refused') || str_contains($d, 'incorrect') => TrackingStatus::EXCEPTION,
             'SH014' === $code || str_contains($d, 'record created') || str_contains($d, 'shipment created') => TrackingStatus::PENDING,

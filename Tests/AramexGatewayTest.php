@@ -16,6 +16,10 @@ final class AramexGatewayTest extends TestCase
 {
     private array $calls = [];
 
+    private ?array $tracking = null;
+
+    private ?array $offices = null;
+
     private static function shipment(): Shipment
     {
         return new Shipment(new Address('Glitch Art', ['Sheikh Zayed Road'], '00000', 'Dubai', 'AE', phone: '+97141234567'), new Address('Alex Martin', ['King Abdullah II St'], '11118', 'Amman', 'JO', phone: '+96261234567'), [new Parcel(2000, 30, 20, 10, 5000, 'USD')], reference: 'ORDER-1042');
@@ -31,11 +35,11 @@ final class AramexGatewayTest extends TestCase
             return match (true) {
                 str_ends_with($url, '/CalculateRate') => new MockResponse(json_encode(['HasErrors' => false, 'TotalAmount' => ['CurrencyCode' => 'USD', 'Value' => 'PPX' === $product ? 48.5 : 31.0]])),
                 str_ends_with($url, '/CreateShipments') => new MockResponse(json_encode(['HasErrors' => false, 'Shipments' => [['ID' => '42345678901', 'HasErrors' => false, 'ShipmentLabel' => ['LabelURL' => 'https://ws.sbx.aramex.net/content/rpt_cache/42345678901.pdf', 'LabelFileContents' => base64_encode('%PDF-1.4 aramex')]]]])),
-                str_ends_with($url, '/TrackShipments') => new MockResponse(json_encode(['HasErrors' => false, 'TrackingResults' => [['Key' => '42345678901', 'Value' => [
+                str_ends_with($url, '/TrackShipments') => new MockResponse(json_encode($this->tracking ?? ['HasErrors' => false, 'TrackingResults' => [['Key' => '42345678901', 'Value' => [
                     ['UpdateCode' => 'SH005', 'UpdateDescription' => 'Delivered', 'UpdateDateTime' => '/Date(1790933400000)/', 'UpdateLocation' => 'Amman, Jordan'],
                     ['UpdateCode' => 'SH014', 'UpdateDescription' => 'Record created.', 'UpdateDateTime' => '/Date(1790836000000)/', 'UpdateLocation' => 'Dubai, United Arab Emirates'],
                 ]]]])),
-                str_ends_with($url, '/FetchOffices') => new MockResponse(json_encode(['HasErrors' => false, 'Offices' => [['Entity' => 'AQJ', 'OfficeLocation' => 'Aqaba', 'OfficeAddress' => ['Line1' => 'Al Hammamat Al Tunisyya St', 'City' => 'Aqaba', 'CountryCode' => 'JO']], ['Entity' => 'AMM', 'OfficeLocation' => 'Amman', 'OfficeAddress' => ['Line1' => 'Mecca St', 'City' => 'Amman', 'CountryCode' => 'JO', 'Latitude' => 31.95, 'Longitude' => 35.91]]]])),
+                str_ends_with($url, '/FetchOffices') => new MockResponse(json_encode($this->offices ?? ['HasErrors' => false, 'Offices' => [['Entity' => 'AQJ', 'OfficeLocation' => 'Aqaba', 'OfficeAddress' => ['Line1' => 'Al Hammamat Al Tunisyya St', 'City' => 'Aqaba', 'CountryCode' => 'JO']], ['Entity' => 'AMM', 'OfficeLocation' => 'Amman', 'OfficeAddress' => ['Line1' => 'Mecca St', 'City' => 'Amman', 'CountryCode' => 'JO', 'Latitude' => 31.95, 'Longitude' => 35.91]]]])),
                 default => new MockResponse(json_encode(['HasErrors' => true, 'Notifications' => [['Code' => 'ERR01', 'Message' => 'Unknown operation']]])),
             };
         });
@@ -87,5 +91,42 @@ final class AramexGatewayTest extends TestCase
         } catch (CarrierException $e) {
             self::assertSame('ERR52', $e->carrierCode);
         }
+    }
+
+    /**
+     * Aramex's updates: "Collected from shipper" is the pickup by Aramex (in transit), "Collected
+     * by consignee" the parcel taken at an office (delivered), "held for collection" waiting at
+     * one (available for pickup).
+     */
+    public function testCollectedFromTheShipperIsInTransit(): void
+    {
+        $this->tracking = ['HasErrors' => false, 'TrackingResults' => [['Key' => '42345678901', 'Value' => [
+            ['UpdateCode' => '', 'UpdateDescription' => 'Collected by Consignee', 'UpdateDateTime' => '/Date(1791100000000)/', 'UpdateLocation' => 'Amman, Jordan'],
+            ['UpdateCode' => '', 'UpdateDescription' => 'Held for collection at Aramex office', 'UpdateDateTime' => '/Date(1791000000000)/', 'UpdateLocation' => 'Amman, Jordan'],
+            ['UpdateCode' => '', 'UpdateDescription' => 'Collected from shipper', 'UpdateDateTime' => '/Date(1790900000000)/', 'UpdateLocation' => 'Dubai, United Arab Emirates'],
+        ]]]];
+        $tracking = $this->gateway()->track('42345678901');
+        self::assertSame([TrackingStatus::IN_TRANSIT, TrackingStatus::AVAILABLE_FOR_PICKUP, TrackingStatus::DELIVERED], array_map(static fn ($e) => $e->status, $tracking->events));
+    }
+
+    /**
+     * FetchOffices answers every office of the country, in no order and without distance: the
+     * searched postcode's and city's offices first, then the others nearest to them (great-circle,
+     * from their coordinates); an Entity shared by several offices is told apart by the location.
+     */
+    public function testOfficesComeNearestFirst(): void
+    {
+        $office = static fn (string $entity, string $location, string $city, ?float $lat, ?float $lng, string $postcode = '') => ['Entity' => $entity, 'OfficeLocation' => $location, 'OfficeAddress' => array_filter(['Line1' => $location.' St', 'City' => $city, 'PostCode' => $postcode, 'CountryCode' => 'JO', 'Latitude' => $lat, 'Longitude' => $lng])];
+        $this->offices = ['HasErrors' => false, 'Offices' => [
+            $office('AQJ', 'Aqaba', 'Aqaba', 29.53, 35.00),
+            $office('IRB', 'Irbid', 'Irbid', 32.55, 35.85),
+            $office('AMM', 'Amman Sweifieh', 'Amman', 31.95, 35.86),
+            $office('ZRQ', 'Zarqa', 'Zarqa', 32.07, 36.09),
+            $office('AMM', 'Amman Abdali', 'Amman', 31.96, 35.91, '11118'),
+            $office('MAD', 'Madaba', 'Madaba', null, null),
+        ]];
+        $points = $this->gateway()->pickupPoints(self::shipment()->recipient);
+        self::assertSame(['AMM:Amman Abdali', 'AMM:Amman Sweifieh', 'ZRQ', 'IRB', 'AQJ', 'MAD'], array_map(static fn ($p) => $p->id, $points));
+        self::assertNull($points[0]->distance, 'Aramex gives no distance from the address');
     }
 }
