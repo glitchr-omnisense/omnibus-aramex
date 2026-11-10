@@ -210,6 +210,10 @@ omnibus:
                 sandbox: '%env(bool:ARAMEX_SANDBOX)%'
 ```
 
+## Usage policy
+
+`policy.json` (named in `composer.json`'s `extra.omnisense.policy`): its limits are unknown (`null`) and `verifiedAt` is `null`: no terms could be read at their source on 2026-11-10 (the notes say what was tried). Access is under the carrier's contract. A shipment is sent once. A 429 is a `RateLimitedException`, never retried, and the carrier's next calls wait for its `Retry-After`, unsent. See omnisense/omnibus' [Usage policies and rate limits](https://github.com/glitchr-omnisense/omnibus/blob/2.x/docs/policies.md).
+
 ## Errors
 
 Every failure is an `Omnibus\Exception\CarrierException` whose `carrier` is `aramex`:

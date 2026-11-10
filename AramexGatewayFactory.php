@@ -28,12 +28,13 @@ final class AramexGatewayFactory extends GatewayFactory
         $config->defaults([
             'omnibus.factory_name' => 'aramex',
             'omnibus.factory_title' => 'Aramex',
+            'omnibus.policy' => __DIR__.'/policy.json',
             'omnibus.required_options' => ['username', 'password', 'account_number', 'account_pin', 'account_entity', 'account_country'],
             'sandbox' => false,
             'omnibus.api' => function (Config $c) {
                 $http = $this->http ?? HttpClient::create();
 
-                return new Api($http, (string) $c['username'], (string) $c['password'], (string) $c['account_number'], (string) $c['account_pin'], (string) $c['account_entity'], (string) $c['account_country'], (bool) $c['sandbox']);
+                return new Api($http, (string) $c['username'], (string) $c['password'], (string) $c['account_number'], (string) $c['account_pin'], (string) $c['account_entity'], (string) $c['account_country'], (bool) $c['sandbox'], backoff: $c->backoff());
             },
             'omnibus.action.rating' => static fn (Config $c) => $c->get('rates') ? null : new RatingAction(),
             'omnibus.action.shipping' => new ShippingAction(),

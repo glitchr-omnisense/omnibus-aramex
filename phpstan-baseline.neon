@@ -1,0 +1,499 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot access offset ''City'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot access offset ''CountryCode'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot access offset ''Entity'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot access offset ''Latitude'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot access offset ''Line1'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot access offset ''Line2'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot access offset ''Longitude'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot access offset ''OfficeAddress'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot access offset ''OfficeLocation'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 4
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot access offset ''PostCode'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 2
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 8
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_values expects array\<T\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Parameter \#2 \$street of class Omnibus\\Model\\Address constructor expects array\<string\>, list\<int, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: Action/RatingAction.php
+
+		-
+			message: '#^Binary operation "\." between ''Aramex '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: Action/RatingAction.php
+
+		-
+			message: '#^Cannot access offset ''CurrencyCode'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/RatingAction.php
+
+		-
+			message: '#^Cannot access offset ''Value'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/RatingAction.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 1
+			path: Action/RatingAction.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: Action/RatingAction.php
+
+		-
+			message: '#^Parameter \#2 \$product of static method Omnibus\\Aramex\\Mapping\:\:details\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Action/RatingAction.php
+
+		-
+			message: '#^Parameter \#2 \$service of class Omnibus\\Model\\Rate constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Action/RatingAction.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: Action/RatingAction.php
+
+		-
+			message: '#^Cannot access offset ''Code'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Cannot access offset ''HasErrors'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Cannot access offset ''ID'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Cannot access offset ''LabelFileContents'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Cannot access offset ''LabelURL'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Cannot access offset ''Message'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Cannot access offset ''Notifications'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Cannot access offset ''ShipmentLabel'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 4
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Parameter \#3 \$carrierCode of class Omnibus\\Exception\\CarrierException constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Parameter \#5 \$url of class Omnibus\\Model\\Label constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 2
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Binary operation "/" between non\-empty\-string and 1000 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Cannot access offset ''UpdateCode'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Cannot access offset ''UpdateDateTime'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Cannot access offset ''UpdateDescription'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Cannot access offset ''UpdateLocation'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Cannot access offset ''Value'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Parameter \#1 \$code of static method Omnibus\\Aramex\\Mapping\:\:status\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Parameter \#1 \$datetime of class DateTimeImmutable constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Parameter \#2 \$description of static method Omnibus\\Aramex\\Mapping\:\:status\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Parameter \#4 \$location of class Omnibus\\Model\\TrackingEvent constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Parameter \#5 \$code of class Omnibus\\Model\\TrackingEvent constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Action/TrackingAction.php
+
+		-
+			message: '#^Cannot access offset ''Code'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Api.php
+
+		-
+			message: '#^Cannot access offset ''Message'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Api.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Api.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: Api.php
+
+		-
+			message: '#^Method Omnibus\\Aramex\\Api\:\:call\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Api.php
+
+		-
+			message: '#^Method Omnibus\\Aramex\\Api\:\:call\(\) should return array\<string, mixed\> but returns array\<mixed, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: Api.php
+
+		-
+			message: '#^Method Omnibus\\Aramex\\Api\:\:secrets\(\) should return list\<string\> but returns non\-empty\-array\<int\<0, max\>\|string, string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: Api.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 6
+			path: AramexGatewayFactory.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: Mapping.php
+
+		-
+			message: '#^Method Omnibus\\Aramex\\Mapping\:\:details\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Mapping.php
+
+		-
+			message: '#^Method Omnibus\\Aramex\\Mapping\:\:party\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Mapping.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: Tests/AramexContractTest.php
+
+		-
+			message: '#^Cannot access offset ''AccountNumber'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset ''ActualWeight'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset ''ClientInfo'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset ''CustomsValueAmount'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset ''Details'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset ''LabelInfo'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset ''ProductGroup'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset ''ProductType'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset ''ReportID'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset ''ShipmentDetails'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset ''Shipments'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset ''Value'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access offset 1 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 7
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot access property \$at on Omnibus\\Model\\TrackingEvent\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Parameter \#1 \$body of class Symfony\\Component\\HttpClient\\Response\\MockResponse constructor expects iterable\<string\|Throwable\>\|string, string\|false given\.$#'
+			identifier: argument.type
+			count: 6
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Parameter \#2 \$string of static method PHPUnit\\Framework\\Assert\:\:assertStringEndsWith\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Property Omnibus\\Aramex\\Tests\\AramexGatewayTest\:\:\$calls type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Property Omnibus\\Aramex\\Tests\\AramexGatewayTest\:\:\$offices type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Tests/AramexGatewayTest.php
+
+		-
+			message: '#^Property Omnibus\\Aramex\\Tests\\AramexGatewayTest\:\:\$tracking type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Tests/AramexGatewayTest.php
