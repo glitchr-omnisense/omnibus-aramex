@@ -4,6 +4,41 @@ Aramex for [omnisense/omnibus](https://github.com/glitchr-omnisense/omnibus): ra
 shipments with their labels (Shipping), tracking (Tracking) and offices (Location) - the JSON
 web services on ws.aramex.net.
 
+## Install and a first call
+
+```sh
+composer require omnibus/aramex
+```
+
+No account for this first call: Aramex's answer is recorded (`Omnibus\Testing\RecordedHttpClient`
+answers in place of the API), so nothing leaves the process. With your own credentials, give the
+factory your HTTP client (or none: it makes its own) and drop the recorded one.
+
+```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Omnibus\Aramex\AramexGatewayFactory;
+use Omnibus\Testing\RecordedHttpClient;
+
+// Aramex's answer, recorded: no account, and nothing leaves the process.
+$http = new RecordedHttpClient([
+    '/TrackShipments' => ['HasErrors' => false, 'TrackingResults' => [['Key' => '42345678901', 'Value' => [
+        ['UpdateCode' => 'SH005', 'UpdateDescription' => 'Delivered', 'UpdateDateTime' => '/Date(1790933400000)/', 'UpdateLocation' => 'Amman, Jordan'],
+    ]]]],
+]);
+$gateway = (new AramexGatewayFactory($http))->create(['username' => 'ws@example.org', 'password' => 'pass', 'account_number' => '20016', 'account_pin' => '331421', 'account_entity' => 'DXB', 'account_country' => 'AE', 'sandbox' => true]);
+
+$tracking = $gateway->track('42345678901');
+echo $tracking->status->value, ' - ', $tracking->latest()?->description, "\n";   // delivered - Delivered
+```
+
+A real call needs a Aramex account (the credentials below). The answer is shaped after Aramex's
+published documentation; the package has not been run against its service yet.
+
+## Configuration
+
 ```php
 $gateway = (new AramexGatewayFactory($http))->create($options);   // $http: the application's HTTP client - none given, the factory makes its own; the options below
 ```
